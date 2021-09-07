@@ -31,13 +31,14 @@ class onMessage(commands.Cog):
             Tags = [i[len(Key):] for i in message.content.split() if i.startswith(Key)]
 
             action = message
-            content = message.content.replace('##', '')
+            content = message.content
 
             if 'tag' in Tags:
                 embed = await Custom(
                     "Text Tags!",
-                    "These can be used by anyone!\n\n`##embed` -> embed the message\n`##bold` and `##underline` -> used with `##embed` to format the text\n`##pin` -> owner / coowner only, to pin the message.\n`##delete` -> to delete the origional message"
+                    "These can be used by anyone!\n\n`##embed` -> embed the message\n`##bold` / `##underline` -> used with `##embed` to format the text\n`##pin` -> owner / coowner only, to pin the message.\n`##delete` -> to delete the origional message"
                 )
+                await message.channel.send(embed = embed)
                 return
 
             if 'bold' in Tags:
