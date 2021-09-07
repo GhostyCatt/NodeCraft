@@ -2,4 +2,4 @@
 .Env
 
 # Ignore pycashe
-__pycashe__/
+__pycache__/
