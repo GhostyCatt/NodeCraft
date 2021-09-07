@@ -75,6 +75,6 @@ if __name__ == '__main__':
 
     print(Fore.LIGHTCYAN_EX + "[ ■ ] Finished loading extensions")
 
-# Logging into discord
+# Logging into discord with token from secure file
 load_dotenv()
 Bot.run(os.getenv('Token'))
