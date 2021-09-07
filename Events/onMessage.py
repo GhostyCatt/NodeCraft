@@ -25,23 +25,39 @@ class onMessage(commands.Cog):
         """ 
         OwnerRole = nextcord.utils.get(message.guild.roles, id = Options['Roles']['Owner'])
         CoownerRole = nextcord.utils.get(message.guild.roles, id = Options['Roles']['Coowner'])
-
-        if OwnerRole in message.author.roles or CoownerRole in message.author.roles:
-            if "##pin" in message.content:
-                Content = message.content.replace('##pin', '')
-
-                if '##embed' in Content.lower():
-                    Content = Content.replace('##embed', '')
-
-                    embed = await Custom(title = f"{message.author.name}#{message.author.discriminator}", text = Content)
-
-                    sent = await message.channel.send(embed = embed)
-                    await sent.pin(reason = "Message pinned for owner")
-
-                    await message.delete()
                 
+        if "##" in message.content:
+            Key = "##"
+            Tags = [i[len(Key):] for i in message.content.split() if i.startswith(Key)]
+
+            action = message
+            content = message.content.replace('##', '')
+
+            if 'tag' in Tags:
+                embed = await Custom(
+                    "Text Tags!",
+                    "These can be used by anyone!\n\n`##embed` -> embed the message\n`##bold` and `##underline` -> used with `##embed` to format the text\n`##pin` -> owner / coowner only, to pin the message.\n`##delete` -> to delete the origional message"
+                )
+                return
+
+            if 'bold' in Tags:
+                content = f"**{content}**"
+
+            if 'underline' in Tags:
+                content = f"__{content}__"
+
+            if 'embed' in Tags:
+                embed = await Custom(title = f"{message.author.name}#{message.author.discriminator}", text = content)
+                action = await message.channel.send(embed = embed)
+            
+            if 'pin' in Tags:
+                if OwnerRole in message.author.roles or CoownerRole in message.author.roles:
+                    await action.pin()
                 else:
-                    await message.pin(reason = "Message pinned for owner")
+                    pass
+            
+            if 'delete' in Tags:
+                await message.delete()
 
     
 # Add the onMessage cog
